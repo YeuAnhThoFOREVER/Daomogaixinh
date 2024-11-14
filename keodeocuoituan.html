@@ -4,100 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('https://media.gettyimages.com/id/2173471339/photo/2024-china-open-badminton-championships-day-5.jpg?s=2048x2048&w=gi&k=20&c=j7sa5hTGCs82O-yvLszrCwZ5iJubnI1psy7OXyhYvEY='); /* Default background */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            transition: background-image 0.5s; /* Smooth transition */
-            display: flex;
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
-            height: 100vh; /* Full height of the viewport */
-        }
-        .container {
-            display: flex;
-            max-width: 1000px; /* Limit max width */
-            width: 100%; /* Take full width */
-        }
-        .image-preview {
-            flex: 1; /* Take available space */
-            padding: 20px;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            overflow: hidden;
+            color: #333;
         }
-        img {
-            max-width: 100%; /* Make the image responsive */
-            max-height: 300px; /* Limit the height */
-            border-radius: 10px; /* Add some border radius */
+        .container {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin: 20px;
+            padding: 30px;
+            box-sizing: border-box;
+            border: 3px solid #ff9a9e;
         }
-        form {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
+        .header {
+            text-align: center;
+            padding: 10px;
+            color: #ff6f61;
+            background: #fff7f7;
             border-radius: 10px;
-            max-width: 500px;
-            margin: auto;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 24px;
+        }
+        .form-container {
+            padding: 0 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        form label {
+            font-weight: 700;
+            margin-top: 15px;
+            display: block;
+            color: #ff6f61;
+            font-size: 14px;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="tel"],
+        form input[type="file"],
+        form input[type="radio"],
+        form input[type="checkbox"] {
+            width: calc(100% - 20px);
+            margin-top: 5px;
+            padding: 12px;
+            border: 2px solid #ffb6b9;
+            border-radius: 10px;
+            background: #fff7f7;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff6f61;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #ffb6b9;
+        }
+        .preview-image {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .preview-image img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 15px;
+            display: block;
+            border: 2px solid #ffb6b9;
+        }
+        .header-icon {
+            font-size: 30px;
+            color: #ffb6b9;
         }
     </style>
     <script>
-        function changeBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
+        function displayPreviews(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            // Restrict to maximum of 5 images
+            if (files.length > 5) {
+                alert("You can only add up to 5 pictures.");
+                event.target.value = ''; // Clear file input
+                return;
+            }
+
+            Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                    document.getElementById('imagePreview').src = e.target.result; // Update the image preview
-                }
-                reader.readAsDataURL(file); // Read the file as a data URL
-            }
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
         }
     </script>
 </head>
 <body>
-    <h2>Student Registration</h2>
     <div class="container">
-        <div class="image-preview">
-            <img id="imagePreview" src="" alt="Uploaded Image Preview" style="display: none;"> <!-- Initially hidden -->
+        <div class="header">
+            <span class="header-icon">💖</span>
+            <h2>Student Registration</h2>
         </div>
-        <form action = "thanks.html" method="post">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName"><br><br>
+        <div class="form-container">
+            <form action="thanks.html" method="post">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
 
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName"><br><br>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email"><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone"><br><br>
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
 
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city"><br><br>
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
 
-            <label>Gender:</label><br>
-            <input type="radio" id="male" name="gender" value="male">
-            <label for="male">Male</label><br>
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">Female</label><br><br>
+                <label>Gender:</label>
+                <input type="radio" id="male" name="gender" value="male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="female">
+                <label for="female">Female</label>
 
-            <label>Hobbies:</label><br>
-            <input type="checkbox" id="cricket" name="hobbies" value="cricket">
-            <label for="cricket">Cricket</label><br>
-            <input type="checkbox" id="badminton" name="hobbies" value="badminton">
-            <label for="badminton">Badminton</label><br>
-            <input type="checkbox" id="chess" name="hobbies" value="chess">
-            <label for="chess">Chess</label><br><br>
+                <label>Hobbies:</label>
+                <input type="checkbox" id="cricket" name="hobbies" value="cricket">
+                <label for="cricket">Cricket</label>
+                <input type="checkbox" id="badminton" name="hobbies" value="badminton">
+                <label for="badminton">Badminton</label>
+                <input type="checkbox" id="chess" name="hobbies" value="chess">
+                <label for="chess">Chess</label>
 
-            <label for="backgroundUpload">Upload Background Image:</label>
-            <input type="file" id="backgroundUpload" accept="image/*" onchange="changeBackground(event)">
-            <br><br>
+                <label for="backgroundUpload">Add Picture (Max 5):</label>
+                <input type="file" id="backgroundUpload" accept="image/*" multiple onchange="displayPreviews(event)">
 
-            <input type="submit" value="Register">
-        </form>
+                <input type="submit" value="Register">
+            </form>
+            <div id="previewContainer" class="preview-image">
+                <!-- Preview images will be displayed here -->
+            </div>
+        </div>
     </div>
-    <p>Click <a href="https://example.com/image.jpg" target="_blank">here</a> to view the image.</p>
 </body>
 </html>
